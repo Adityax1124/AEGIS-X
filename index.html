@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>AEGIS-X | Cyber Attack Simulation Platform</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#">About us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Types of Cyber Attacks</a></li>
+            <li><a href="#">Past trials</a></li>
+            <li><a href="#">How this works</a></li>
+        </ul>
+    </nav>
+
+    <!-- MAIN SECTION -->
+    <section class="main-area">
+
+        <div class="title-left">
+            <h1>AEGIS-X</h1>
+        </div>
+
+        <div class="content-right">
+            <h2>Cyber Attack Simulation Platform</h2>
+
+            <p class="desc">
+                AEGIS-X is a live, interactive environment designed to demonstrate my cybersecurity
+                project. Users can attempt simulation-based intrusions and observe how the system
+                responds in real-time.
+            </p>
+
+            <div class="button-group">
+                <a class="btn">Start Simulation</a>
+                <a id="openPopup" class="btn">Create New ID</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- POPUP -->
+    <div id="popup" class="popup-container">
+        <div class="popup-content">
+
+            <span id="closePopup" class="close-button">&times;</span>
+
+            <h2>Create Your Account</h2>
+
+            <p class="popup-note">
+                Only enter your real <b>Name</b> and <b>Email</b>.<br>
+                Do <b>NOT</b> enter any sensitive password or real ID.
+            </p>
+
+            <form id="registerForm">
+                <input id="name" type="text" placeholder="Full Name (Real)" required>
+                <input id="email" type="email" placeholder="Email (Real)" required>
+                <input id="userId" type="text" placeholder="Create User ID (Fake)" required>
+                <input id="password" type="password" placeholder="Create Password (Fake)" required>
+
+                <button type="submit" class="popup-btn">Create Account</button>
+            </form>
+
+        </div>
+    </div>
+
+    <!-- POPUP SCRIPT + FORM SUBMISSION -->
+    <script>
+        const popup = document.getElementById("popup");
+        const openPopup = document.getElementById("openPopup");
+        const closePopup = document.getElementById("closePopup");
+
+        openPopup.onclick = () => {
+            popup.style.visibility = "visible";
+            popup.style.opacity = "1";
+        };
+
+        closePopup.onclick = () => {
+            popup.style.opacity = "0";
+            setTimeout(() => popup.style.visibility = "hidden", 300);
+        };
+
+        window.onclick = (e) => {
+            if (e.target === popup) {
+                popup.style.opacity = "0";
+                setTimeout(() => popup.style.visibility = "hidden", 300);
+            }
+        };
+
+        // SEND DATA TO VERCEL API
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const user_id = document.getElementById("userId").value;
+            const password = document.getElementById("password").value;
+
+            const response = await fetch("/api/createUser", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ name, email, user_id, password })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert("Account Created Successfully!");
+                popup.style.opacity = "0";
+                setTimeout(() => popup.style.visibility = "hidden", 300);
+            } else {
+                alert("Error: " + data.error.message);
+            }
+        });
+    </script>
+
+</body>
+</html>
