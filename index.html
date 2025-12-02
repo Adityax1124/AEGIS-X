@@ -113,7 +113,7 @@ window.onload = function () {
         const password = document.getElementById("password").value.trim();
 
         // SEND DATA TO DATABASE
-        const response = await fetch("https://YOUR_VERCEL_URL/api/createUser", {
+        const response = await fetch("https://aegis-x-ten.vercel.app/api/createUser", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ name, email, user_id, password })
@@ -153,4 +153,5 @@ window.onload = function () {
 
 </body>
 </html>
+
 
