@@ -68,54 +68,67 @@
     </div>
 
     <!-- POPUP SCRIPT + FORM SUBMISSION -->
-    <script>
-        const popup = document.getElementById("popup");
-        const openPopup = document.getElementById("openPopup");
-        const closePopup = document.getElementById("closePopup");
+   <script>
+    const popup = document.getElementById("popup");
+    const openPopup = document.getElementById("openPopup");
+    const closePopup = document.getElementById("closePopup");
 
-        openPopup.onclick = () => {
-            popup.style.visibility = "visible";
-            popup.style.opacity = "1";
-        };
+    // OPEN POPUP
+    openPopup.onclick = () => {
+        popup.style.visibility = "visible";
+        popup.style.opacity = "1";
+    };
 
-        closePopup.onclick = () => {
+    // CLOSE POPUP
+    closePopup.onclick = () => {
+        popup.style.opacity = "0";
+        setTimeout(() => popup.style.visibility = "hidden", 300);
+    };
+
+    window.onclick = (e) => {
+        if (e.target === popup) {
             popup.style.opacity = "0";
             setTimeout(() => popup.style.visibility = "hidden", 300);
-        };
+        }
+    };
 
-        window.onclick = (e) => {
-            if (e.target === popup) {
-                popup.style.opacity = "0";
-                setTimeout(() => popup.style.visibility = "hidden", 300);
-            }
-        };
+    // FORM SUBMISSION
+    document.getElementById("registerForm").addEventListener("submit", async (e) => {
+        e.preventDefault(); // prevent page reload
+
+        const name = document.getElementById("name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const user_id = document.getElementById("userId").value.trim();
+        const password = document.getElementById("password").value.trim();
 
         // SEND DATA TO VERCEL API
-        document.getElementById("registerForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const user_id = document.getElementById("userId").value;
-            const password = document.getElementById("password").value;
-
-            const response = await fetch("/api/createUser", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ name, email, user_id, password })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                alert("Account Created Successfully!");
-                popup.style.opacity = "0";
-                setTimeout(() => popup.style.visibility = "hidden", 300);
-            } else {
-                alert("Error: " + data.error.message);
-            }
+        const response = await fetch("/api/createUser", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, email, user_id, password })
         });
-    </script>
+
+        const data = await response.json();
+
+        if (data.success) {
+
+            // CLOSE POPUP
+            popup.style.opacity = "0";
+            setTimeout(() => popup.style.visibility = "hidden", 300);
+
+            // CLEAR INPUTS
+            document.getElementById("registerForm").reset();
+
+            // SUCCESS MESSAGE
+            alert("Account Created Successfully!");
+
+        } else {
+            alert("Error: " + data.error.message);
+        }
+    });
+</script>
+
 
 </body>
 </html>
+
