@@ -180,3 +180,50 @@ body {
     background: #00ffd0;
     box-shadow: 0 0 15px #00ffd0;
 }
+
+
+
+/* SUCCESS POPUP */
+.success-popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+
+    visibility: hidden;
+    opacity: 0;
+    z-index: 99999;
+    transition: opacity 0.3s ease;
+}
+
+.success-popup-box {
+    background: #0d0d0d;
+    padding: 30px 40px;
+    border-radius: 12px;
+    border: 1px solid #00faff;
+    box-shadow: 0 0 20px rgba(0,255,255,0.22);
+    text-align: center;
+    color: #dffefe;
+    animation: popupAnim 0.3s ease-in-out;
+}
+
+.success-popup-box h3 {
+    font-size: 22px;
+    color: #00faff;
+    margin-bottom: 10px;
+}
+
+.success-popup-box p {
+    color: #b6ffff;
+    font-size: 15px;
+}
+
